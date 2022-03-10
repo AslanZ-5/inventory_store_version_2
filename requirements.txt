@@ -2,9 +2,11 @@ asgiref==3.5.0
 async-generator==1.10
 atomicwrites==1.4.0
 attrs==21.4.0
+black==22.1.0
 certifi==2021.10.8
 cffi==1.15.0
 charset-normalizer==2.0.12
+click==8.0.4
 colorama==0.4.4
 cryptography==36.0.1
 Django==4.0.3
@@ -14,8 +16,11 @@ h11==0.13.0
 idna==3.3
 inflection==0.5.1
 iniconfig==1.1.1
+mypy-extensions==0.4.3
 outcome==1.1.0
 packaging==21.3
+pathspec==0.9.0
+platformdirs==2.5.1
 pluggy==1.0.0
 py==1.11.0
 pycparser==2.21
