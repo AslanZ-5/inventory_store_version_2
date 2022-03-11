@@ -91,6 +91,22 @@ class Product(models.Model):
         return self.name
 
 
+class ProdcutType(models.Model):
+    """
+    Product type table
+    """
+
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name=_("type of product"),
+        help_text=_("format: required, unique, max-255"),
+    )
+
+    def __str__(self):
+        return self.name
+
+
 class ProductInventory(models.Model):
     """
     Product inventory table
