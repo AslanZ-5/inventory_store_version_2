@@ -1,3 +1,4 @@
+from unittest import result
 import pytest
 from store_v2.inventory import models
 
@@ -37,3 +38,53 @@ def test_inventory_db_category_insert_data(
 
     assert result.slug == slug
     assert result.is_active == is_active
+
+
+@pytest.mark.dbfixture
+@pytest.mark.parametrize(
+    "id, web_id, name, slug, description, is_active, create_at, updated_at",
+    [
+        (
+        1,
+        "45425810",
+        "widstar running sneakers",
+        'distar-running-sneakers',
+        'Lorem ipsu this is tasting text that means nothing ',
+        1, # is_active 
+        "2021-09-04 22:14:18",,
+        "2021-09-04 22:14:18",
+        ),
+        (
+        8616,
+        "23423432",
+        "impact puse dance shoe",
+        'impact-puse-dance-shoe',
+        'Lorem ipsu this issdfs tadsfsdsting tdsfsdfsext that means nothing ',
+        1, # is_active 
+        "2021-09-04 22:14:18",,
+        "2021-09-04 22:14:18",
+        ),
+    ],
+)
+def test_inventory_db_product_dbfixture(
+    db,
+    db_fixture_setup,
+    id,
+    web_id,
+    name,
+    slug,
+    description,
+    is_active,
+    create_at,
+    updated_at
+):
+    result = models.Product.objects.get(id=id)
+    result_created_at = result.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    result_updated_at = result.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    assert result.we_id == web_id
+    assert result.name == name
+    assert result.slug == slug
+    assert result.description == description
+    assert result.is_active == is_active
+    assert result_created_at == create_at
+    assert result_updated_at == updated_at
