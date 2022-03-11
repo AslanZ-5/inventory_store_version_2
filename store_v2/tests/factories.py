@@ -13,3 +13,6 @@ class CategoryFactory(factory.django.DjangoModelFactory):
 
     name = fake.lexify(text="cat_name_??????")
     slug = fake.lexify(text="cat_slug_??????")
+
+
+register(CategoryFactory)

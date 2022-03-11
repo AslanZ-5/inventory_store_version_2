@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "store_v2.dashboard",
     "store_v2.inventory",
+    # External applications
+    "mptt",
 ]
 
 MIDDLEWARE = [
