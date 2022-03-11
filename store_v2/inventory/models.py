@@ -107,6 +107,19 @@ class ProdcutType(models.Model):
         return self.name
 
 
+class Brand(models.Model):
+    """
+    Product brand Table
+    """
+
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name=_("brand name"),
+        help_text=_("format: required, unique, max-255"),
+    )
+
+
 class ProductInventory(models.Model):
     """
     Product inventory table
