@@ -1,4 +1,5 @@
 from unittest import result
+from django.db import IntegrityError
 import pytest
 from store_v2.inventory import models
 
@@ -45,24 +46,24 @@ def test_inventory_db_category_insert_data(
     "id, web_id, name, slug, description, is_active, create_at, updated_at",
     [
         (
-        1,
-        "45425810",
-        "widstar running sneakers",
-        'distar-running-sneakers',
-        'Lorem ipsu this is tasting text that means nothing ',
-        1, # is_active 
-        "2021-09-04 22:14:18",,
-        "2021-09-04 22:14:18",
+            1,
+            "45425810",
+            "widstar running sneakers",
+            "distar-running-sneakers",
+            "Lorem ipsu this is tasting text that means nothing ",
+            1,  # is_active
+            "2021-09-04 22:14:18",
+            "2021-09-04 22:14:18",
         ),
         (
-        8616,
-        "23423432",
-        "impact puse dance shoe",
-        'impact-puse-dance-shoe',
-        'Lorem ipsu this issdfs tadsfsdsting tdsfsdfsext that means nothing ',
-        1, # is_active 
-        "2021-09-04 22:14:18",,
-        "2021-09-04 22:14:18",
+            8616,
+            "23423432",
+            "impact puse dance shoe",
+            "impact-puse-dance-shoe",
+            "Lorem ipsu this issdfs tadsfsdsting tdsfsdfsext that means nothing ",
+            1,  # is_active
+            "2021-09-04 22:14:18",
+            "2021-09-04 22:14:18",
         ),
     ],
 )
@@ -76,7 +77,7 @@ def test_inventory_db_product_dbfixture(
     description,
     is_active,
     create_at,
-    updated_at
+    updated_at,
 ):
     result = models.Product.objects.get(id=id)
     result_created_at = result.created_at.strftime("%Y-%m-%d %H:%M:%S")
@@ -88,3 +89,20 @@ def test_inventory_db_product_dbfixture(
     assert result.is_active == is_active
     assert result_created_at == create_at
     assert result_updated_at == updated_at
+
+
+def test_inventory_db_product_uniqueness_integrity(db, product_factory):
+    new_web_id = product_factory.create(web_id=123456789)
+    with pytest.raises(IntegrityError):
+        product_factory.create(web_id=123456789)
+
+
+@pytest.mark.dbfixture
+def test_inventory_db_product_insert_data(
+    db, product_factory, category_factory
+):
+    new_category = category_factory.create()
+    new_product = product_factory.create(category=(1, 36))
+    result_product_category = new_product.category.all().count()
+    assert "web_id_" in new_product.web_id
+    assert result_product_category == 2
