@@ -91,7 +91,7 @@ class Product(models.Model):
         return self.name
 
 
-class ProdcutType(models.Model):
+class ProductType(models.Model):
     """
     Product type table
     """
