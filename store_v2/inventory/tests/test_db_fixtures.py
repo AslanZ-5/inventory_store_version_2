@@ -1,3 +1,4 @@
+from turtle import up
 from unittest import result
 from django.db import IntegrityError
 import pytest
@@ -108,3 +109,93 @@ def test_inventory_db_product_insert_data(
     result_product_category = new_product.category.all().count()
     assert "web_id_" in new_product.web_id
     assert result_product_category == 5
+
+
+@pytest.mark.dbfixture
+@pytest.mark.parametrize(
+    "id, sku, upc, product_type, product, brand, is_active, retail_price, store_price, sale_price, weight, created_at, updated_at",
+    [
+        (
+            1,
+            "76323423423",
+            "23423423423",
+            1,
+            1,
+            1,
+            1,
+            97.00,
+            92.00,
+            46.00,
+            987,
+            "2021-09-04 22:14:18",
+            "2021-09-04 22:14:18",
+        ),
+        (
+            8616,
+            "32432413413",
+            "3142343243",
+            1,
+            8616,
+            1253,
+            1,
+            89.00,
+            84.00,
+            42.00,
+            929,
+            "2021-09-04 22:14:18",
+            "2021-09-04 22:14:18",
+        ),
+    ],
+)
+def test_inventory_db_product_inventory_dataset(
+    db,
+    db_fixture_setup,
+    id,
+    sku,
+    upc,
+    product_type,
+    product,
+    brand,
+    is_active,
+    retail_price,
+    store_price,
+    sale_price,
+    weight,
+    created_at,
+    updated_at,
+):
+    result = models.ProductInventory.objects.get(id=id)
+    result_created_at = result.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    result_updated_at = result.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    assert result.sku == sku
+    assert result.upc == upc
+    assert result.product_type.id == product_type
+    assert result.product.id == product
+    assert result.brand.id == brand
+    assert result.is_active == is_active
+    assert result.retail_price == retail_price
+    assert result.store_price == store_price
+    assert result_created_at == created_at
+    assert result_updated_at == updated_at
+
+
+def test_inventory_db_product_inventory_insert_data(
+    db, product_inventory_factory
+):
+    new_product = product_inventory_factory.create(
+        sku="123456789",
+        upc="123456789",
+        product_type__name="new_name",
+        porduct__web_id="123456789",
+        brand_name="new_name",
+    )
+    assert new_product.sku == "123456789"
+    assert new_product.upc == ""
+    assert new_product.product_type.name == "new_name"
+    assert new_product.product.web_id == "123456789"
+    assert new_product.brand.name == "new_name"
+    assert new_product.is_active == 1
+    assert new_product.retail_price == 97.00
+    assert new_product.store_price == 92.00
+    assert new_product.sale_price == 46.00
+    assert new_product.weight == 987
