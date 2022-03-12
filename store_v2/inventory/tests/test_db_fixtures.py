@@ -117,14 +117,14 @@ def test_inventory_db_product_insert_data(
     [
         (
             1,
-            "76323423423",
-            "23423423423",
+            "7633969397",
+            "934093051374",
             1,
             1,
             1,
             1,
-            97.00,
-            92.00,
+            97,
+            92,
             46.00,
             987,
             "2021-09-04 22:14:18",
@@ -132,8 +132,8 @@ def test_inventory_db_product_insert_data(
         ),
         (
             8616,
-            "32432413413",
-            "3142343243",
+            "3880741573",
+            "844935525855",
             1,
             8616,
             1253,
@@ -186,11 +186,11 @@ def test_inventory_db_product_inventory_insert_data(
         sku="123456789",
         upc="123456789",
         product_type__name="new_name",
-        porduct__web_id="123456789",
-        brand_name="new_name",
+        product__web_id="123456789",
+        brand__name="new_name",
     )
     assert new_product.sku == "123456789"
-    assert new_product.upc == ""
+    assert new_product.upc == "123456789"
     assert new_product.product_type.name == "new_name"
     assert new_product.product.web_id == "123456789"
     assert new_product.brand.name == "new_name"
