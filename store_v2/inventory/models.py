@@ -1,5 +1,6 @@
 from distutils.command.upload import upload
 from email.policy import default
+from operator import mod
 from tabnanny import verbose
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -247,3 +248,26 @@ class Media(models.Model):
     class Meta:
         verbose_name = _("product image")
         verbose_name_plural = _("product images")
+
+class Stock(models.Model):
+    product_inventory = models.OneToOneField(
+        ProductInventory, 
+        related_name="product_inventory",
+        on_delete=models.PROTECT,
+    )
+    last_checked = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_("inventory stock check date"),
+        help_text=_("format: Y-m-d H:M:S")
+    )
+    units = models.IntegerField(
+        default=0,
+        verbose_name=_("units qty of stock"),
+        help_text=_("format: required, default-0")
+    )
+    units_sold = models.IntegerField(
+        default=0,
+        verbose_name=_("units qty of stock"),
+        help_text=_("format: required, default-0")
+    )
