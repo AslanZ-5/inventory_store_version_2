@@ -325,7 +325,7 @@ def test_inventory_db_stock_insert_data(db, stock_factory):
 
 @pytest.mark.dbfixture
 @pytest.mark.parametrize(
-    "id, product_inventory, last_checked, units, units_sold",
+    "id, name, description",
     [
         (1, "men-shoe-size", "men shoe size"),
     ],

@@ -249,9 +249,10 @@ class Media(models.Model):
         verbose_name = _("product image")
         verbose_name_plural = _("product images")
 
+
 class Stock(models.Model):
     product_inventory = models.OneToOneField(
-        ProductInventory, 
+        ProductInventory,
         related_name="product_inventory",
         on_delete=models.PROTECT,
     )
@@ -259,15 +260,31 @@ class Stock(models.Model):
         null=True,
         blank=True,
         verbose_name=_("inventory stock check date"),
-        help_text=_("format: Y-m-d H:M:S")
+        help_text=_("format: Y-m-d H:M:S"),
     )
     units = models.IntegerField(
         default=0,
         verbose_name=_("units qty of stock"),
-        help_text=_("format: required, default-0")
+        help_text=_("format: required, default-0"),
     )
     units_sold = models.IntegerField(
         default=0,
         verbose_name=_("units qty of stock"),
-        help_text=_("format: required, default-0")
+        help_text=_("format: required, default-0"),
     )
+
+
+class ProductAttribute(models.Model):
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name=_("product attribute name"),
+        help_text=_("format: required, unique, max-255"),
+    )
+    description = models.TextField(
+        verbose_name=_("product attribute description"),
+        help_text=_("format: required"),
+    )
+
+    def __str__(self):
+        return self.name
