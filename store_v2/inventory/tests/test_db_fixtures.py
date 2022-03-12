@@ -309,7 +309,7 @@ def test_inventory_db_stock_dataset(
     units_sold,
 ):
     result = models.Stock.objects.get(id=id)
-    result_last_checked = result.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    result_last_checked = result.last_checked.strftime("%Y-%m-%d %H:%M:%S")
     assert result.product_inventory.id == product_inventory
     assert result_last_checked == last_checked
     assert result.units == units
@@ -321,3 +321,34 @@ def test_inventory_db_stock_insert_data(db, stock_factory):
     assert new_stock.product_inventory.sku == "123456789"
     assert new_stock.units == 2
     assert new_stock.units_sold == 100
+
+
+@pytest.mark.dbfixture
+@pytest.mark.parametrize(
+    "id, product_inventory, last_checked, units, units_sold",
+    [
+        (1, "men-shoe-size", "men shoe size"),
+    ],
+)
+def test_inventory_db_product_attribute_dataset(
+    db, dj_fixture_setup, id, name, description
+):
+    result = models.ProductAttribute.objects.get(id=id)
+    assert result.name == name
+    assert result.description == description
+
+
+def test_inventory_db_product_attribute_insert_data(
+    db, product_attribute_factory
+):
+    new_attribute = product_attribute_factory.create()
+    assert new_attribute.name == "attribute_name_0"
+    assert new_attribute.description == "description_0"
+
+
+def test_inventory_db_product_attribute_uniqueness_integrity(
+    db, product_attribute_factory
+):
+    product_attribute_factory.create(name="not_unique")
+    with pytest.raises(IntegrityError):
+        product_attribute_factory.create(name="not_unique")
