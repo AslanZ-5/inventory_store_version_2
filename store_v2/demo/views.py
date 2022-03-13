@@ -8,13 +8,17 @@ def home(request):
 
 def category(request):
     data = models.Category.objects.all()
-    print(data)
     return render(request, "categories.html", {"data": data})
 
 
 def product_by_category(request, category):
     data = models.Product.objects.filter(category__name=category).values(
-        "id", "name", "category__name", "product__store_price"
+        "id", "name", "slug", "category__name", "product__store_price"
     )
-    print(data)
+
     return render(request, "product_by_category.html", {"data": data})
+
+
+def product_detail(request, slug):
+    # data = models.Product.filter(slug=slug)
+    return render(request, "product_detail.html")
