@@ -1,5 +1,5 @@
 from itertools import product
-from operator import ne
+from operator import mod, ne
 from turtle import up
 from unicodedata import name
 from unittest import result
@@ -366,7 +366,7 @@ def test_inventory_db_product_attribute_dataset(
 ):
     result = models.ProductAttributeValue.objects.get(id=id)
     assert result.product_attribute.id == product_attribute
-    assert result.attribute_value == attribute_value
+    assert result.attribute_value == "10"
 
 
 def test_inventory_db_product_attribute_value_data(
@@ -377,3 +377,14 @@ def test_inventory_db_product_attribute_value_data(
     )
     assert new_attribute_value.attribute_value == "new_value"
     assert new_attribute_value.product_attribute.name == "new_value"
+
+
+def test_inventory_db_insert_inventory_product_values(
+    db, product_with_attribute_values_factory
+):
+    new_inv_attribute = product_with_attribute_values_factory.create(
+        sku="123456789"
+    )
+    result = models.ProductInventory.objects.get(sku="123456789")
+    count = result.attribute_values.all().count()
+    assert count == 2

@@ -1,5 +1,6 @@
 from distutils.command.upload import upload
 from email.policy import default
+from enum import unique
 from operator import mod
 from tabnanny import verbose
 from django.db import models
@@ -143,6 +144,11 @@ class ProductInventory(models.Model):
     )
     product_type = models.ForeignKey(
         ProductType, related_name="product_type", on_delete=models.PROTECT
+    )
+    attribute_values = models.ManyToManyField(
+        "ProductAttributeValue",
+        related_name="product_attribute_values",
+        through="ProductAttributeValues",
     )
     product = models.ForeignKey(
         Product, related_name="product", on_delete=models.PROTECT
@@ -304,3 +310,19 @@ class ProductAttributeValue(models.Model):
 
     def __str__(self):
         return f"{self.product_attribute.name} : {self.attribute_value}"
+
+
+class ProductAttributeValues(models.Model):
+    attributevalues = models.ForeignKey(
+        ProductAttributeValue,
+        related_name="attribute_values",
+        on_delete=models.PROTECT,
+    )
+    productinventory = models.ForeignKey(
+        ProductInventory,
+        related_name="product_attribute_values",
+        on_delete=models.PROTECT,
+    )
+
+    class Meta:
+        unique_together = (("attributevalues", "productinventory"),)
