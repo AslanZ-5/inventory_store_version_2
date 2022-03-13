@@ -1,0 +1,14 @@
+{% extends 'base.html' %} 
+{% block content %} 
+<h1>
+    Products by category
+</h1>
+
+{% for i in data %} 
+<li><strong>Name:</strong> {{i.name}}</li>
+<li><strong>Id</strong> {{i.id}}</li>
+<li><strong>Price: $</strong> {{i.product__store_price}}</li>
+{% endfor %}
+
+{% endblock %} 
+ 

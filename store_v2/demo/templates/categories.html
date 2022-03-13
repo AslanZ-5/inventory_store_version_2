@@ -7,6 +7,6 @@
 <hr>
 
 {% for i in data %}
-<a href="{% url 'demo:product_by_category' category=x.slug %}">{{i.name}}</a> <br>
+<a href="{% url 'demo:product_by_category' category=i.slug %}">{{i.name}}</a> <br>
 {% endfor %} 
 {% endblock %} 
