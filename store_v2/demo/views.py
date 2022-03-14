@@ -39,12 +39,12 @@ def product_detail(request, slug):
             "product_inventory__units",
         )
     )
-    # data = models.ProductInventory.objects.filter(product__slug=slug).values(
-    #     "id",
-    #     "product__name",
-    #     "sku",
-    #     "store_price",
-    #     "product_inventory__units",
-    # )
-    print(data)
-    return render(request, "product_detail.html", {"data": data})
+    z = (
+        models.ProductTypeAttribute.objects.filter(
+            product_type__product_type__product__slug=slug
+        )
+        .values("product_attribute__name")
+        .distinct()
+    )
+
+    return render(request, "product_detail.html", {"data": data, "z": z})

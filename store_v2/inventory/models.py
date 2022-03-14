@@ -107,6 +107,11 @@ class ProductType(models.Model):
         verbose_name=_("type of product"),
         help_text=_("format: required, unique, max-255"),
     )
+    product_type_attributes = models.ManyToManyField(
+        "ProductAttribute",
+        related_name="product_type_attribute",
+        through="ProductTypeAttribute",
+    )
 
     def __str__(self):
         return self.name
@@ -331,3 +336,18 @@ class ProductAttributeValues(models.Model):
 
     class Meta:
         unique_together = (("attributevalues", "productinventory"),)
+
+
+class ProductTypeAttribute(models.Model):
+    product_attribute = models.ForeignKey(
+        ProductAttribute,
+        related_name="productattribte",
+        on_delete=models.PROTECT,
+    )
+
+    product_type = models.ForeignKey(
+        ProductType, related_name="producttype", on_delete=models.PROTECT
+    )
+
+    class Meta:
+        unique_together = (("product_attribute", "product_type"),)
