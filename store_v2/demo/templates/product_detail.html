@@ -9,6 +9,22 @@ product detail
 </ul>
 
 
-{% for i in z %} 
-{{i.product_attribute__name}}
+
+
+
+
+<ul>
+  {% for x in z %} 
+  <li>
+   {{x.product_attribute__name}}
+  {% for i in y %}
+  <ul>
+  {% if x.product_attribute__name == i.attribute_values__product_attribute__name %}
+  <li>{{i.attribute_values__attribute_value}} </li>
+  {% endif %} 
+</ul>
+  {% endfor %}
+</li>
 {% endfor %}
+
+</ul>

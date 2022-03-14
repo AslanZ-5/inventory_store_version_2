@@ -39,6 +39,14 @@ def product_detail(request, slug):
             "product_inventory__units",
         )
     )
+    y = (
+        models.ProductInventory.objects.filter(product__slug=slug)
+        .values(
+            "attribute_values__product_attribute__name",
+            "attribute_values__attribute_value",
+        )
+        .distinct()
+    )
     z = (
         models.ProductTypeAttribute.objects.filter(
             product_type__product_type__product__slug=slug
@@ -47,4 +55,6 @@ def product_detail(request, slug):
         .distinct()
     )
 
-    return render(request, "product_detail.html", {"data": data, "z": z})
+    return render(
+        request, "product_detail.html", {"data": data, "y": y, "z": z}
+    )
