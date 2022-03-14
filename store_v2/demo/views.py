@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from store_v2.inventory import models
+from django.db.models import Count
 
 
 def home(request):
@@ -20,12 +21,30 @@ def product_by_category(request, category):
 
 
 def product_detail(request, slug):
-    data = models.ProductInventory.objects.filter(product__slug=slug).values(
-        "id",
-        "product__name",
-        "sku",
-        "store_price",
-        "product_inventory__units",
+    filter_values = []
+    if request.GET:
+        for i in request.GET.values():
+            filter_values.append(i)
+
+    data = (
+        models.ProductInventory.objects.filter(product__slug=slug)
+        .filter(attribute_values__attribute_value__in=filter_values)
+        .annotate(num_tags=Count("attribute_values"))
+        .filter(num_tags=len(filter_values))
+        .values(
+            "id",
+            "product__name",
+            "sku",
+            "store_price",
+            "product_inventory__units",
+        )
     )
+    # data = models.ProductInventory.objects.filter(product__slug=slug).values(
+    #     "id",
+    #     "product__name",
+    #     "sku",
+    #     "store_price",
+    #     "product_inventory__units",
+    # )
     print(data)
     return render(request, "product_detail.html", {"data": data})
