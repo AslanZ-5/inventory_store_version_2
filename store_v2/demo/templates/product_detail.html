@@ -1,1 +1,9 @@
-pr detail
+product detail
+
+<ul>
+  {% for i in data %}
+  <li>{{i.product__name}}</li>
+  <li>{{i.sku}}</li>
+  <li>{{i.product_inventory__units}}</li>
+  {% endfor %}
+</ul>
