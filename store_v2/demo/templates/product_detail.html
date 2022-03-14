@@ -1,11 +1,14 @@
-product detail
+{% extends 'base.html' %}
 
 
-
-
+{% block content %}
+<h1>Product Detail </h1>
+<br>
+<hr>
+<br>
 <ul>
- 
-  <li>---{{data.product__name}}</li>
+
+  <li>{{data.product__name}}</li>
   <li>{{data.sku}}</li>
   <li>{{data.product_inventory__units}}</li>
 
@@ -13,17 +16,76 @@ product detail
 
 
 <ul>
-  {% for x in z %} 
+  {% for x in z %}
   <li>
-   {{x.product_attribute__name}}
-  {% for i in y %}
-  <ul>
-  {% if x.product_attribute__name == i.attribute_values__product_attribute__name %}
-  <li>{{i.attribute_values__attribute_value}} </li>
-  {% endif %} 
-</ul>
+    {{x.product_attribute__name}}
+    {% for i in y %}
+    <ul>
+      {% if x.product_attribute__name == i.attribute_values__product_attribute__name %}
+      {% if i.attribute_values__attribute_value in data.field_a %}
+      <li>
+        <div class="selected fw-bold" id="target-{{i.attribute_values__attribute_value}}"
+        data-attribute="{{x.product_attribute__name}}" value="{{i.attribute_values__attribute_value}}">
+          {{i.attribute_values__attribute_value}}
+        </div>
+      </li>
+      {% else %}
+      <div id="target-{{i.attribute_values__attribute_value}}"
+        data-attribute="{{x.product_attribute__name}}" value="{{i.attribute_values__attribute_value}}">
+          {{i.attribute_values__attribute_value}}
+        </div>
+      {% endif %}
+      {% endif %}
+    </ul>
+    {% endfor %}
+  </li>
   {% endfor %}
-</li>
-{% endfor %}
 
 </ul>
+
+
+
+
+<script>
+  var d = {}
+  let textBoxes = document.querySelectorAll('[id^=target]')
+  let e = 0
+  let f = textBoxes.length
+  for (let i in textBoxes) {
+    if (e < f){
+      if (textBoxes[i].classList.contains('selected')){
+        d[textBoxes[i].getAttribute('data-attribute')] = textBoxes[i].
+        getAttribute('value')
+      }
+    } else{
+      break
+    }
+    e++
+  }
+  console.log(d)
+
+  // document.addEventListener('click', function(e){
+  //   let value = e.target.getAttribute('value')
+  //   d[e.target.getAttribute('data-attribute')] = e.target.getAttribute('value')
+  //   let querystring = buildUrlWithParams(d)
+  //   let url = window.location.href.split('?')[0]
+  //   window.location.href = url + '?' + querystring
+  // }, false)
+  $('[id^=target]').click(function () {
+    const value = this.getAttribute('value');
+    d[this.getAttribute('data-attribute')] = this.getAttribute('value')
+    const querystring = buildUrlWithParams(d)
+    const url = window.location.href.split('?')[0]
+    window.location.href = url + "?" + querystring;
+  });
+  function buildUrlWithParams(data){
+    var searchparams = [];
+    for (var d in data)
+    searchparams.push(d + '=' + data[d]);
+
+    return searchparams.join('&')
+    
+  }
+</script>
+
+{% endblock %}
