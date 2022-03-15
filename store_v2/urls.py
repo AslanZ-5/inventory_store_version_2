@@ -5,6 +5,7 @@ from store_v2.drf import views
 
 router = routers.DefaultRouter()
 router.register(r"api", views.AllProductsViewSet, basename=("allproducts"))
+router.register(r"product", views.ProductInventoryView, basename=("products"))
 
 urlpatterns = [
     path("admin/", admin.site.urls),
