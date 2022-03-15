@@ -4,7 +4,7 @@ from rest_framework import routers
 from store_v2.drf import views
 
 router = routers.DefaultRouter()
-router.register(r"home", views.AllProductsViewSet, basename=("allproducts"))
+router.register(r"api", views.AllProductsViewSet, basename=("allproducts"))
 
 urlpatterns = [
     path("admin/", admin.site.urls),
