@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     "store_v2.dashboard",
     "store_v2.inventory",
     "store_v2.demo",
+    "store_v2.drf",
     # External applications
     "mptt",
     "django_elasticsearch_dsl",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
