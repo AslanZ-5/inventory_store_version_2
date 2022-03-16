@@ -1,6 +1,8 @@
+from asyncore import read
 from rest_framework import serializers
 from store_v2.inventory.models import (
     Brand,
+    Category,
     Product,
     ProductAttributeValue,
     ProductInventory,
@@ -41,24 +43,24 @@ class AllProducts(serializers.ModelSerializer):
         editable = False
 
 
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ["name"]
+        read_only = True
+        editable = False
+
+
 class ProductInventorySerializer(serializers.ModelSerializer):
-    brand = BrandSerializer(many=False, read_only=True)
-    attribute = ProductAttributeValueSerializer(
-        source="attribute_values", many=True
-    )
-    image = MediaSerializer(source="media_product_inventory", many=True)
+    # brand = BrandSerializer(many=False, read_only=True)
+    # attribute = ProductAttributeValueSerializer(
+    #     source="attribute_values", many=True
+    # )
+    # image = MediaSerializer(source="media_product_inventory", many=True)
+    product = ProductSerializer(many=False, read_only=True)
 
     class Meta:
         model = ProductInventory
-        fields = [
-            "sku",
-            "store_price",
-            "image",
-            "is_default",
-            "brand",
-            "product",
-            "product_type",
-            "attribute",
-        ]
+        fields = ["id", "sku", "store_price", "is_default", "product"]
         read_only = True
         # depth = 4
